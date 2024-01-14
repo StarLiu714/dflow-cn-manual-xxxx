@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python
+spec:
+  selector:
+    matchLabels:
+      app: python
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: python
+        image: starliu714/python:0.3
+        ports:
+        - containerPort: 5000

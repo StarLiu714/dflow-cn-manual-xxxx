@@ -1,0 +1,8 @@
+rdkit pandas==2.1.4 
+deepchem==2.5.0 
+xgboost==0.90
+torch 
+hhsuite
+vina
+pytz
+dateutil
