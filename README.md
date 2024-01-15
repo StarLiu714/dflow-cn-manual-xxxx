@@ -206,6 +206,7 @@ wf.submit()
 
 
 ## Hello world example 2: 基于PythonOPTemplate
+亦可查阅交互式jupyter notebook文档: [python-helloworld](examples/dflow-helloworld-modified.ipynb)
 ```python
 from pathlib import Path
 
