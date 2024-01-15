@@ -490,7 +490,7 @@ te_dataset = upload_artifact("testBBBP.csv")
 val_dataset = upload_artifact("validBBBP.csv")
 ```
 
-### Step 1: SetupAndLoad
+### Step 1: Setup and Load
 ```python
 class SetupAndLoad(OP):
     def __init__(self):
@@ -536,7 +536,7 @@ class SetupAndLoad(OP):
         return op_out
 ```
 
-### Step 2: TransformData
+### Step 2: Transform the Datasets
 ```python
 class TransformData(OP):
     def __init__(self):
