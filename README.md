@@ -485,6 +485,9 @@ from deepchem.data import NumpyDataset, DiskDataset
 - 3 拟合、训练模型
 - 4 预测分子性质/测试模型表现
 
+### Workflow
+<img src="img/4-step-workflow.png" width="70%">
+
 ### Step 0: Load dataset (source: Molnet)
 ```python
 tr_dataset = upload_artifact("trainBBBP.csv")
