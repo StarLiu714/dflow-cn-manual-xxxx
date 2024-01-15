@@ -1,8 +1,7 @@
 # 快速上手: AI模型预测分子活性（基于Dflow工作流套件）
 
 ## 目录
-* [快速上手](#快速上手-ai模型预测分子活性基于dflow工作流套件)
-  * [先决条件](#prerequisite)
+  * [预配置](#prerequisite)
   * [快速设置 (MacOS)](#quick-setup-macos)
   * [Hello World 示例](#hello-world-example)
     * [基于ShellOPTemplate](#hello-world-example-1-基于shelloptemplate)
@@ -89,6 +88,10 @@ def setup_dflow(os_name, os_env="notebook"):
 output = setup_dflow(os_name)
 print(output)
 ```
+过程可能显示如图:
+
+<img src="img/minikube_setup.png" width="60%">
+
 显示如下字样即表示成功：
 
     [INFO] Found docker client at /opt/homebrew/bin/docker
@@ -348,7 +351,6 @@ wf.submit()
 
 
 
-
 ## Docker镜像-工作流内部环境新手指南
 
 #### 较为简单的工作流环境可以由如下代码进行指定：
@@ -419,6 +421,7 @@ docker pull tensorflow/tensorflow:latest
 ```
     docker pull pytorch/pytorch:latest
 ```
+<img src="img/docker_pull_image.png" width="60%">
 
 显示下载完成后, 可以输入指令检查当前镜像列表:
 ```
