@@ -337,6 +337,9 @@ wf.submit()
 
 
 ## Docker镜像-工作流内部环境新手指南
+之前的例子功能实现较为简单，没有对其中的配置过多展开。在实际运行过程中，工作环境可能是复杂的、不通用的。
+Argo Workflow的每一个step会重启一个独立、隔绝的新环境, 仅仅通过配置本地环境 (ipykernel/conda-env/singularity)是没法设置工作过程中的各种依赖项的。
+这一个section来介绍一下新手如何指定、配置工作流的内部环境。
 
 #### 较为简单的工作流环境可以由如下代码进行指定：
 - Alphine Linux 轻量环境
@@ -368,8 +371,8 @@ wf.submit()
         image = "deepchemio/deepchem"
         )
 ```
-
 #### 个性化自定义配置方法请参考接下来介绍的方法。
+
 
 ### Option 1: Dockerfile配置
 
