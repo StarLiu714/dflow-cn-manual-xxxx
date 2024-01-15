@@ -113,8 +113,6 @@ print(output)
 
 
 ## Hello world Example 1: 基于ShellOPTemplate
-
-
 ```python
 from dflow import (
     ShellOPTemplate,
@@ -126,11 +124,9 @@ from dflow import (
     )
 ```
 
-
 ```python
 art = upload_artifact("foo.txt")
 ```
-
 
 ```python
 step1_templ = ShellOPTemplate(
@@ -153,7 +149,6 @@ step1_templ.outputs.artifacts = {
 }
 ```
 
-
 ```python
 step2_templ = ShellOPTemplate(
     name="Duplicate",
@@ -174,7 +169,6 @@ step2_templ.outputs.parameters = {
     }
 ```
 
-
 ```python
 step1 = Step(
     name="step1",
@@ -193,7 +187,6 @@ step2 = Step(
     )
 ```
 
-
 ```python
 wf = Workflow(name="helloworld")
 wf.add(step1)
@@ -210,11 +203,7 @@ wf.submit()
 
 
 
-
-
 ## Hello world example 2: 基于PythonOPTemplate
-
-
 ```python
 from pathlib import Path
 
@@ -222,10 +211,8 @@ from dflow import Step, Workflow
 from dflow.python import OP, OPIO, Artifact, OPIOSign, PythonOPTemplate
 ```
 
-
 ```python
 from dflow import upload_artifact
-
 art = upload_artifact("foo.txt")
 print(art)
 ```
@@ -246,7 +233,6 @@ print(art)
      'slice': None,
      'storage_client': None,
      'urn': ''}
-
 
 
 ```python
@@ -317,7 +303,6 @@ class Duplicate(OP):
         })
         return op_out
 ```
-
 
 ```python
 import sys
@@ -473,14 +458,11 @@ docker pull tensorflow/tensorflow:latest
 ```
 
 ## XgBoost预测小分子活性 (基于Dflow工作流套件PythonOPTemplate)
-
-
 ```python
 # Infrastructure modules
 from dflow import Step, Workflow, upload_artifact
 from dflow.python import OP, OPIO, Artifact, OPIOSign, PythonOPTemplate, upload_packages
 from pathlib import Path
-
 # Scientific Computing modules
 import sys, os, torch
 import deepchem as dc
@@ -489,22 +471,20 @@ from deepchem.data import NumpyDataset, DiskDataset
 ```
 
 ### 总体上分为五步: 
-- 1 上传smile数据集至worflow环境
+- 0 上传smile数据集至worflow环境
 - 2 smile转指纹
 - 3 指纹数据集正则化
-- 4 拟合、训练模型
-- 5 预测分子性质/测试模型表现
+- 3 拟合、训练模型
+- 4 预测分子性质/测试模型表现
 
-
+### Step 0: Load dataset (source: Molnet)
 ```python
 tr_dataset = upload_artifact("trainBBBP.csv")
 te_dataset = upload_artifact("testBBBP.csv")
 val_dataset = upload_artifact("validBBBP.csv")
 ```
 
-### Step 0: SetupAndLoad
-
-
+### Step 1: SetupAndLoad
 ```python
 class SetupAndLoad(OP):
     def __init__(self):
@@ -550,9 +530,7 @@ class SetupAndLoad(OP):
         return op_out
 ```
 
-### Step 1: TransformData
-
-
+### Step 2: TransformData
 ```python
 class TransformData(OP):
     def __init__(self):
@@ -601,9 +579,7 @@ class TransformData(OP):
         return op_out
 ```
 
-### Step 2: Train the model
-
-
+### Step 3: Train the model
 ```python
 class TrainModel(OP):
     def __init__(self):
@@ -651,8 +627,6 @@ class TrainModel(OP):
 ```
 
 ### Step 4: Predict and Evaluate
-
-
 ```python
 class EvaluateModel(OP):
     def __init__(self):
@@ -709,11 +683,9 @@ package_list = [
 ```
 
 #### Step Setting
-
-
 ```python
-# Step 0: Setup and Load Data
-step0 = Step(
+# Step 1: Setup and Load Data
+step1 = Step(
     name="setup-and-load",
     template=PythonOPTemplate(
         SetupAndLoad,
@@ -726,37 +698,34 @@ step0 = Step(
         "valid_file": val_dataset,
     }
 )
-
-# Step 1: Transform Data
-step1 = Step(
+# Step 2: Transform Data
+step2 = Step(
     name="transform-data",
     template=PythonOPTemplate(
         TransformData,
         image="starliu714/python:deepchem",
     ),
     artifacts={
-        "train_dataset_dir": step0.outputs.artifacts["train_dataset_dir"],
-        "test_dataset_dir": step0.outputs.artifacts["test_dataset_dir"],
-        "valid_dataset_dir": step0.outputs.artifacts["valid_dataset_dir"],
+        "train_dataset_dir": step1.outputs.artifacts["train_dataset_dir"],
+        "test_dataset_dir": step1.outputs.artifacts["test_dataset_dir"],
+        "valid_dataset_dir": step1.outputs.artifacts["valid_dataset_dir"],
     }
 )
-
-# Step 2: Train Model
+# Step 3: Train Model
 # It should take the output of step1 as input
-step2 = Step(
+step3 = Step(
     name="train-model",
     template=PythonOPTemplate(
         TrainModel,
         image="starliu714/python:deepchem",
     ),
     artifacts={
-        "transformed_train": step1.outputs.artifacts["transformed_train_dir"],
-        "transformed_valid": step1.outputs.artifacts["transformed_valid_dir"],
+        "transformed_train": step2.outputs.artifacts["transformed_train_dir"],
+        "transformed_valid": step2.outputs.artifacts["transformed_valid_dir"],
     }
 )
-
-# Step 3: Evaluate Model
-step3 = Step(
+# Step 4: Evaluate Model
+step4 = Step(
     name="evaluate-model",
     template=PythonOPTemplate(
         EvaluateModel,
@@ -764,21 +733,19 @@ step3 = Step(
         python_packages=package_list,
     ),
     artifacts={
-        "model": step2.outputs.artifacts["model_path"],  # Model artifact from step2
-        "transformed_test": step1.outputs.artifacts["transformed_test_dir"],  # Test dataset artifact from step1
+        "model": step3.outputs.artifacts["model_path"],  # Model artifact from step3
+        "transformed_test": step2.outputs.artifacts["transformed_test_dir"],  # Test dataset artifact from step2
     }
 )
 ```
 
 #### Create and submit workflow
-
-
 ```python
 wf = Workflow(name="xgboost")
-wf.add(step0)
 wf.add(step1)
 wf.add(step2)
 wf.add(step3)
+wf.add(step4)
 wf.submit()
 ```
 
@@ -788,6 +755,7 @@ Workflow has been submitted (ID: xgboost-6f6zg, UID: 68c9d900-6405-47de-b0df-6cd
 Workflow link: https://127.0.0.1:[Port number]/workflows/argo/[Workflow Name]-[Submission ID]
 ```
 直接点击或复制链接至浏览器即可进入Argo Workflow的控制面板(dashboard)进行实时监测。
+
 
 ## 使用Dflow进行AI模型预测的优势：
 
