@@ -1,6 +1,6 @@
 # 快速上手: AI模型预测分子活性（基于Dflow工作流套件）
 
-该文档亦有jupyter notebook交互版: [Dflow_Star_演示笔记.ipynb](Dflow_Star_演示笔记.ipynb.zip), 欢迎查阅！
+该文档亦有jupyter notebook交互版: [Dflow_Star_演示笔记.ipynb](Dflow_Star_演示笔记.ipynb.zip) , 欢迎查阅！
 
 ## 目录
   * [预配置](#prerequisite)
