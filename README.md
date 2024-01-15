@@ -486,7 +486,7 @@ from deepchem.data import NumpyDataset, DiskDataset
 - 4 预测分子性质/测试模型表现
 
 ### Workflow
-<img src="img/4-step-workflow.png" width="70%">
+<img src="img/4-step-workflow.png" width="85%">
 
 ### Step 0: Load dataset (source: Molnet)
 ```python
