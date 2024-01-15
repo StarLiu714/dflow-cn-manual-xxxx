@@ -379,8 +379,9 @@ wf.submit()
 - 依赖项非常多且复杂, 手动逐一安装过于繁琐
 
 #### **配置文件：**
+具体例子请参见: [docker_demo](docker_demo)
 ```
-demo
+docker_demo
   |- app
     |- app.py
   |- dockerfile
