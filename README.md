@@ -467,6 +467,7 @@ docker pull tensorflow/tensorflow:latest
 ```
 
 ## XgBoost预测小分子活性 (基于Dflow工作流套件PythonOPTemplate)
+亦可查阅交互式jupyter notebook文档: [快速上手xgboost预测份子活性](examples/dflow-xgboost.ipynb)
 ```python
 # Infrastructure modules
 from dflow import Step, Workflow, upload_artifact
