@@ -139,7 +139,7 @@ step1_templ.inputs.parameters = {
     "number": InputParameter(),
 }
 step1_templ.inputs.artifacts = {
-    "in_art": InputArtifact(path="msg.txt")
+    "in_art": InputArtifact()
 }
 step1_templ.outputs.parameters = {
     "out_param": OutputParameter(value_from_path="/tmp/results.txt")
